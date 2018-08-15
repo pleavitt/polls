@@ -1,6 +1,6 @@
 # Polls
 
-This application is a REST API for creating and retrieving multiple choice questions. (/questions)
+This application is a REST API for creating and retrieving multiple choice questions. It currently contains one endpoint, /questions
 
 Tech:
 * Spring Boot 2
