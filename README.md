@@ -9,4 +9,4 @@ Tech:
 This app was built for the primary purpose as a test for a prospective employer.
 
 ## Current Issues/Outstanding Tasks
-- Dockerize the application and deploy it to AWS/Heroku
+- Integration Tests are currently WIP
