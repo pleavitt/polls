@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import pleavitt.polls.choice.Choice;
+import pleavitt.polls.question.Question;
 
 import java.util.Arrays;
 
@@ -47,7 +49,6 @@ public class PollsIT {
                 .statusCode(200);
     }
 
-    @Test
     public void retrieveQuestionsTest() {
 
         given()
@@ -61,7 +62,6 @@ public class PollsIT {
                 .statusCode(200);
     }
 
-    @Test
     public void createQuestionCreation() {
 
         Question newQuestion = new Question("What was your first car?", Arrays.asList(new Choice("Hyundai Excel"), new Choice("Holden Commodore"), new Choice("Volkswagen Beetle")));
@@ -81,7 +81,6 @@ public class PollsIT {
         assertThat(responseQuestion.getQuestion()).isNotEqualTo(notQuestion.getQuestion());
     }
 
-    @Test
     public void createEmptyQuestion() {
 
         Question emptyQuestion = new Question("", Arrays.asList(new Choice("Economics"), new Choice("Art"), new Choice("Social Studies")));
@@ -95,7 +94,6 @@ public class PollsIT {
                 .statusCode(400);
     }
 
-    @Test
     public void createQuestionEmptyChoices() {
 
         Question emptyQuestion = new Question("How long is a piece of string?", Arrays.asList());

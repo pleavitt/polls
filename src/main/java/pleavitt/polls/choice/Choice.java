@@ -1,16 +1,14 @@
-package pleavitt.polls;
+package pleavitt.polls.choice;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
+import pleavitt.polls.question.Question;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
-@NoArgsConstructor
+@Data
 public class Choice {
 
     @Id

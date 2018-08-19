@@ -1,4 +1,4 @@
-package pleavitt.polls;
+package pleavitt.polls.question;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
+@RequestMapping(path = "/questions")
 public class QuestionController {
 
     @Autowired
@@ -18,12 +19,12 @@ public class QuestionController {
         this.repository = repository;
     }
 
-    @GetMapping("/questions")
+    @GetMapping
     public Collection<Question> getQuestions() {
         return repository.findAll();
     }
 
-    @PostMapping("/questions")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Question createQuestion(@Valid @RequestBody Question question, HttpServletResponse response) {
 

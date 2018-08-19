@@ -1,12 +1,10 @@
-package pleavitt.polls;
+package pleavitt.polls.question;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import pleavitt.polls.choice.Choice;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,10 +14,8 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
+@Data
+
 @EntityListeners(AuditingEntityListener.class)
 public class Question {
 
@@ -39,7 +35,7 @@ public class Question {
     @NotEmpty
     @OneToMany(targetEntity = Choice.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "question_id")
-    private List<Choice> choices = new ArrayList<>();
+    private List<Choice> choices;
 
     public Question(String question, List<Choice> choices) {
         this.question = question;

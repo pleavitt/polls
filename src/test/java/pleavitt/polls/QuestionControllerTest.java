@@ -12,9 +12,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
+import pleavitt.polls.choice.Choice;
+import pleavitt.polls.question.Question;
+import pleavitt.polls.question.QuestionRepository;
 
 import java.util.Arrays;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -31,7 +35,6 @@ public class QuestionControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
-
 
     @Autowired
     private QuestionRepository repository;
@@ -51,17 +54,33 @@ public class QuestionControllerTest {
     }
 
     @Test
-    public void retrieveQuestionsTest() throws Exception {
-        mockMvc.perform(get("/questions")
+    public void getQuestionsTest() throws Exception {
+
+
+        Question newQuestion = new Question("What is your favourite meat?", Arrays.asList(new Choice("Beef"), new Choice("Chicken"), new Choice("Pork")));
+
+        Gson gsonBuilder = new GsonBuilder().create();
+        String jsonFromPojo = gsonBuilder.toJson(newQuestion);
+
+
+        this.mockMvc.perform(post("/questions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonFromPojo))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.question", is("What is your favourite meat?")));
+
+
+        this.mockMvc.perform(get("/questions")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andDo(print())
-                .andExpect(jsonPath("[0].question").value("What is your favourite meat?"))
-                .andExpect(jsonPath("[4].question").value("What is your favourite colour?"));
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("[0].question").value("What is your favourite meat?"));
     }
 
     @Test
-    public void createQuestionTest() throws Exception {
+    public void postQuestionTest() throws Exception {
 
         Question newQuestion = new Question("What was your first car?", Arrays.asList(new Choice("Hyundai Excel"), new Choice("Holden Commodore"), new Choice("Volkswagen Beetle")));
 
@@ -78,7 +97,7 @@ public class QuestionControllerTest {
     }
 
     @Test
-    public void createEmptyQuestionTest() throws Exception {
+    public void postEmptyQuestionTest() throws Exception {
 
         Question newQuestion = new Question("", Arrays.asList(new Choice("Pie"), new Choice("Chips"), new Choice("Hot Dog")));
 
@@ -93,7 +112,7 @@ public class QuestionControllerTest {
     }
 
     @Test
-    public void createEmptyChoiceTest() throws Exception {
+    public void postEmptyChoiceTest() throws Exception {
 
         Question newQuestion = new Question("Favourite Drink?", Arrays.asList());
 
